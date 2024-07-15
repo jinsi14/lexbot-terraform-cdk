@@ -23,25 +23,51 @@ resource "aws_lexv2models_bot_locale" "example" {
   }
 }
 
-resource "aws_lexv2models_bot_version" "example_version" {
-  bot_id = aws_lexv2models_bot.example.id
-  locale_specification = {
-    "en_US" = {
-      source_bot_version = "DRAFT"
-    }
-  }
-}
+#resource "aws_lexv2models_bot_version" "example_version" {
+#  bot_id = aws_lexv2models_bot.example.id
+#  locale_specification = {
+#    "en_US" = {
+#      source_bot_version = "DRAFT"
+#    }
+#  }
+#}
+
 
 resource "aws_lexv2models_intent" "example" {
   bot_id      = aws_lexv2models_bot.example.id
-  bot_version = aws_lexv2models_bot_version.example_version.bot_version
+  bot_version = "DRAFT"
   name        = "botens_namn"
   locale_id   = aws_lexv2models_bot_locale.example.locale_id
+
+  dialog_code_hook {
+    enabled = false
+  }
+
+  fulfillment_code_hook {
+    enabled = false
+  }
+
+  sample_utterance {
+    utterance = "I want to order {test}"
+  }
 }
+
+#resource "aws_lexv2models_slot" "example" {
+#  bot_id      = aws_lexv2models_bot.example.id
+#  bot_version = "DRAFT"
+#  intent_id   = aws_lexv2models_intent.example.id
+#  locale_id   = aws_lexv2models_bot_locale.example.locale_id
+#  name        = "example"
+#}
 
 resource "aws_lexv2models_slot_type" "test" {
   bot_id      = aws_lexv2models_bot.example.id
-  bot_version = aws_lexv2models_bot_version.example_version.bot_version
+  bot_version = "DRAFT"
   name        = "test"
   locale_id   = aws_lexv2models_bot_locale.example.locale_id
+
+  value_selection_setting {
+    resolution_strategy = "OriginalValue"
+  }
 }
+
