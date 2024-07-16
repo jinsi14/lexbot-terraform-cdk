@@ -14,6 +14,6 @@ output "lex_intent_id" {
   value = aws_lexv2models_intent.example.id
 }
 
-output "lex_slot_type_id" {
-  value = aws_lexv2models_slot_type.test.id
-}
+#output "lex_slot_type_id" {
+#  value = aws_lexv2models_slot_type.test.id
+#}
