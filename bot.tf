@@ -14,9 +14,9 @@ resource "aws_lexv2models_bot" "example" {
 
 # Define Bot Locale ("en_US" in this example)
 resource "aws_lexv2models_bot_locale" "example" {
-  bot_id        = aws_lexv2models_bot.example.id
-  bot_version   = "DRAFT"
-  locale_id     = "en_US"
+  bot_id                           = aws_lexv2models_bot.example.id
+  bot_version                      = "DRAFT"
+  locale_id                        = "en_US"
   n_lu_intent_confidence_threshold = 0.40
 
   voice_settings {
@@ -36,24 +36,19 @@ resource "aws_lexv2models_bot_version" "test" {
 }
 
 # Define the Intent
-resource "aws_lexv2models_intent" "order_flowers_intent" {
-  name        = "OrderFlowers"
-  bot_id       = aws_lexv2models_bot.example.id
-  bot_version = "DRAFT"
+resource "aws_lexv2models_intent" "example" {
+  bot_id      = aws_lexv2models_bot.example.id
+  bot_version = aws_lexv2models_bot_locale.example.bot_version
+  name        = "botens_namn"
   locale_id   = aws_lexv2models_bot_locale.example.locale_id
-}
-
-# Output the Intent ID
-output "order_flowers_intent_id" {
-  value = aws_lexv2models_intent.order_flowers_intent.id
 }
 
 # Create the Slot
 resource "aws_lexv2models_slot" "example" {
-  bot_id        = aws_lexv2models_bot.example.id
-  bot_version   = "DRAFT"
-  intent_id      = aws_lexv2models_intent.order_flowers_intent.id
-  locale_id      = aws_lexv2models_bot_locale.example.locale_id
+   bot_id      = aws_lexv2models_bot.example.id
+  bot_version = aws_lexv2models_bot_version.test.bot_version
+  intent_id   = aws_lexv2models_intent.example.id
+  locale_id   = aws_lexv2models_bot_locale.example.locale_id
   name          = "FlowerTypes"
 
   value_elicitation_setting {
