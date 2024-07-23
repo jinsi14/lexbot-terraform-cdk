@@ -1,5 +1,5 @@
 
-terraform init -backend-config=environments/dev/backend.tfvars
+terraform init
 terraform plan -var-file="environments/dev/variable.tfvars"
 terraform apply -var-file="environments/dev/variable.tfvars"
 
