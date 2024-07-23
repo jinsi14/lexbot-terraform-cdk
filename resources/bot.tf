@@ -1,8 +1,7 @@
 
 //create s3 bucket
 resource "aws_s3_bucket" "lex_bot_bucket" {
-  bucket_prefix = "my-lex-bot-s3-bucket-${var.prefix_region}-${var.env}"
-  force_destroy = true
+  bucket = "my-lex-bot-s3-bucket-${var.prefix_region}-${var.env}"
 }
 
 resource "aws_s3_bucket_versioning" "lex_bot_bucket" {
@@ -16,13 +15,13 @@ resource "aws_s3_bucket_versioning" "lex_bot_bucket" {
 resource "aws_s3_object" "lex_bot_zip" {
   bucket = aws_s3_bucket.lex_bot_bucket.id
   key    = "lex-bots/digiflowersv2-DRAFT-B56L841Z2E-LexJson.zip"
-  source = "../config/digiflowersv2-DRAFT-B56L841Z2E-LexJson.zip"
-  etag   = filemd5("../config/digiflowersv2-DRAFT-B56L841Z2E-LexJson.zip")
+  source = "./config/digiflowersv2-DRAFT-B56L841Z2E-LexJson.zip"
+  etag   = filemd5("./config/digiflowersv2-DRAFT-B56L841Z2E-LexJson.zip")
 }
 
 //create bot
 resource "awscc_lex_bot" "my_lex_bot" {
-  name                   = "my-lex-bot"
+  name                   = "my-lex-bot-${var.prefix_region}-${var.env}"
   auto_build_bot_locales = true
   role_arn               = aws_iam_role.lex_execution_role.arn
   data_privacy = {

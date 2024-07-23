@@ -10,7 +10,7 @@ variable "company" {
 
 variable "project" {
   type    = string
-  default = "BelUSA Connect Outbound Campaign"
+  default = "Test"
 }
 
 variable "prefix_region" {

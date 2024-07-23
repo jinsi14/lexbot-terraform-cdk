@@ -13,6 +13,7 @@ resource "aws_iam_role" "lex_execution_role" {
       },
     ]
   })
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "test" {
