@@ -1,57 +1,64 @@
-resource "aws_lex_bot" "example_bot" {
-  name              = "exampleBot"
-  description       = "Example Lex Bot"
-  child_directed    = false
-  locale            = "en-US"
-  voice_id          = "Joanna"
-  process_behavior  = "BUILD"
+  resource "aws_lexv2models_bot" "example" {
+    name = "digiexamplelexv2"
+    data_privacy {
+      child_directed = false
+    }
+    idle_session_ttl_in_seconds = 300
+    role_arn                    = aws_iam_role.lex_execution_role.arn
 
-  intent {
-    intent_name    = aws_lex_intent.example_intent.name
-    intent_version = aws_lex_intent.example_intent.version
-  }
-
-  abort_statement {
-    message {
-      content_type = "PlainText"
-      content      = "Sorry, I could not understand. Could you please repeat that?"
+    tags = {
+      created_by = "terraform"
     }
   }
-}
 
-resource "aws_lex_intent" "example_intent" {
-  name        = "ExampleIntent"
-  description = "Example Intent"
-  sample_utterances = ["Hello", "Hi"]
-  
-  fulfillment_activity {
-    type = "ReturnIntent"
-  }
+  resource "aws_lexv2models_bot_locale" "example" {
+    bot_id                           = aws_lexv2models_bot.example.id
+    bot_version                      = "DRAFT"
+    locale_id                        = "en_US"
+    n_lu_intent_confidence_threshold = 0.40
 
-  slot {
-    name        = "ExampleSlot"
-    slot_type   = "AMAZON.Person"
-    slot_constraint = "Required"
-    value_elicitation_prompt {
-      message {
-        content_type = "PlainText"
-        content      = "Who is this message for?"
-      }
-      max_attempts = 3
+    voice_settings {
+      voice_id = "Kendra"
+      engine   = "standard"
     }
   }
-}
 
-resource "aws_lex_bot_alias" "example_bot_alias" {
-  name        = "exampleAlias"
-  bot_name    = aws_lex_bot.example_bot.name
-  bot_version = "$LATEST"
-}
+  #resource "aws_lexv2models_bot_version" "example_version" {
+  #  bot_id = aws_lexv2models_bot.example.id
+  #  locale_specification = {
+  #    "en_US" = {
+  #      source_bot_version = "DRAFT"
+  #    }
+  #  }
+  #}
 
-resource "aws_lex_slot_type" "example_slot_type" {
-  name        = "ExampleSlotType"
-  description = "Example Slot Type"
-  enumeration_value {
-    value = "Person"
+
+  resource "aws_lexv2models_intent" "example" {
+    bot_id      = aws_lexv2models_bot.example.id
+    bot_version = "DRAFT"
+    name        = "OrderFlowets"
+    locale_id   = aws_lexv2models_bot_locale.example.locale_id
+
+    dialog_code_hook {
+      enabled = false
+    }
+
+    fulfillment_code_hook {
+      enabled = false
+    }
+
+    sample_utterance {
+      utterance = "I want to order flowers."
+    }
+  }
+
+  resource "aws_lexv2models_slot_type" "flower_type" {
+  bot_id      = aws_lexv2models_bot.example.id
+  bot_version = "DRAFT"
+  name        = "FlowerTypes"
+  locale_id   = aws_lexv2models_bot_locale.example.locale_id
+
+  value_selection_setting {
+    resolution_strategy = "OriginalValue"
   }
 }
