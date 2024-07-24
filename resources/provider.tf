@@ -7,7 +7,6 @@ terraform {
     dynamodb_table = "PLACEHOLDER"
     encrypt        = true
   }
-
 }
 
 provider "aws" {

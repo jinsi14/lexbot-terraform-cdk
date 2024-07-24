@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lex_execution_role" {
-  name = "botens_namn"
+  name = "my-lex-bot-role-${var.prefix_region}-${var.env}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -13,6 +13,7 @@ resource "aws_iam_role" "lex_execution_role" {
       },
     ]
   })
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "test" {
