@@ -16,7 +16,7 @@ remote_state {
 }
 
 inputs = {
-  region = "us-east-1"
+  region                      = "us-east-1"
   prefix_company              = "digi"
   lob                         = "internal"
   prefix_region               = "use1"
