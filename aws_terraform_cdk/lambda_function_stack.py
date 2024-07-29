@@ -1,6 +1,7 @@
 from aws_cdk import (
     aws_lambda as _lambda,
     CfnOutput,
+    Duration, 
 )
 from constructs import Construct
 
@@ -17,6 +18,7 @@ class LambdaFunction(Construct):
             runtime=_lambda.Runtime.PYTHON_3_12,  
             handler="lambda_handler.handler",  
             code=_lambda.Code.from_asset("lambda"),  # Location of the Lambda code
+            timeout=Duration.minutes(5)
         )
 
         # Output the function name
