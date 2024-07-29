@@ -7,7 +7,7 @@ from aws_terraform_cdk.aws_terraform_cdk_stack import AwsTerraformCdkStack
 # resource in lexbot_terraform_cdk/lexbot_terraform_cdk_stack.py
 def test_sqs_queue_created():
     app = core.App()
-    stack = AwsTerraformCdkStack(app, "Awds-terraform-cdk")
+    stack = AwsTerraformCdkStack(app, "Aws-terraform-cdk")
     template = assertions.Template.from_stack(stack)
 
 #     template.has_resource_properties("AWS::SQS::Queue", {
