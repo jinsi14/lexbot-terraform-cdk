@@ -14,10 +14,10 @@ class S3Bucket(Construct):
         self.bucket = s3.Bucket(
             self,
             "AwsCdkTestBucket",
-            bucket_name="aws-cdk-bucket-jinsi",  # Specific bucket name
+            bucket_name="aws-cdk-bucket-test",
             versioned=True,
-            removal_policy=RemovalPolicy.DESTROY,  # Removes bucket when stack is destroyed
-            auto_delete_objects=True,  # Deletes objects within the bucket when stack is destroyed
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_objects=True,
         )
 
         # Output the bucket name
