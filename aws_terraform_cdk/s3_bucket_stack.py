@@ -1,6 +1,7 @@
 from aws_cdk import (
     aws_s3 as s3,
     aws_s3_notifications as s3n,  # Import the S3 notifications module
+    aws_s3_deployment as s3deploy,
     CfnOutput,
     RemovalPolicy,
 )
@@ -22,6 +23,12 @@ class S3Bucket(Construct):
             auto_delete_objects=True,
         )
 
+        deployment = s3deploy.BucketDeployment(
+            self,
+            "DeployLexBotZip",
+            sources=[s3deploy.Source.asset("./lex-bot")],
+            destination_bucket=self.bucket,
+        )
         # Create a notification for S3 bucket to trigger the Lambda function
         notification = s3n.LambdaDestination(lambda_function)
         self.bucket.add_event_notification(s3.EventType.OBJECT_CREATED, notification)

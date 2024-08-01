@@ -4,6 +4,7 @@ from aws_cdk import (
 from constructs import Construct
 from .s3_bucket_stack import S3Bucket
 from .lambda_function_stack import LambdaFunction
+from .aws_lex_stack import LexBot
 
 class AwsTerraformCdkStack(Stack):
 
@@ -15,3 +16,7 @@ class AwsTerraformCdkStack(Stack):
 
         # Create S3 Bucket and pass Lambda Function
         s3_bucket = S3Bucket(self, "MyS3BucketConstruct", lambda_function=lambda_function)
+
+        #Create lex bot
+        lex_bot = LexBot(self, "MyLexBotConstruct", s3_bucket=s3_bucket.bucket)
+        
